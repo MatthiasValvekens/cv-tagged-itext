@@ -42,6 +42,7 @@ public class MultilineItem {
                     .setMultipliedLeading(StyleManager.reducedLeading);
             li.getAccessibilityProperties().setRole(StandardRoles.LI);
             Paragraph lbody = new Paragraph(ITextUtils.neutralText(s)).setMargin(0);
+            lbody.getAccessibilityProperties().setRole(StandardRoles.LBODY);
             li.add(lbody);
             l.add(li);
         }
