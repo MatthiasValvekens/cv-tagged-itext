@@ -17,17 +17,19 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 public class CVItemList {
     private final Table backingTable;
     private final boolean zeropad;
+    private final StyleManager styles;
 
-    public CVItemList(boolean zeropad) {
+    public CVItemList(StyleManager styles, boolean zeropad) {
         this.zeropad = zeropad;
         this.backingTable = new Table(new UnitValue[] {
                 UnitValue.createPointValue(80),
                 UnitValue.createPointValue(400),
         }).setBorder(Border.NO_BORDER);
+        this.styles = styles;
     }
 
-    public CVItemList() {
-        this(false);
+    public CVItemList(StyleManager styles) {
+        this(styles, false);
     }
 
     public void addItem(String label, Div content) {
@@ -46,7 +48,7 @@ public class CVItemList {
         lblProps.addAttributes(attrs);
 
         Paragraph lblPara = new Paragraph().setTextAlignment(TextAlignment.RIGHT)
-                .setMultipliedLeading(StyleManager.reducedLeading);
+                .setMultipliedLeading(this.styles.getLeadingFactor());
         lblPara.getAccessibilityProperties().setRole(null);
         Text lblTxt = new Text(label);
         lblTxt.getAccessibilityProperties().setRole(null);

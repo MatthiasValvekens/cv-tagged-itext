@@ -6,18 +6,24 @@ import com.itextpdf.layout.Style;
 import java.util.Map;
 
 public class StyleManager {
-    public final static float reducedLeading = 0.9f;
+    private final float reducedLeading;
     private final Map<StyleType, Style> styles;
 
+    // TODO make this a builder
     public StyleManager() {
-         this(StyleType.defaultStyles());
+         this(StyleType.defaultStyles(), 0.9f);
     }
 
-    public StyleManager(Map<StyleType, Style> styles) {
+    public StyleManager(Map<StyleType, Style> styles, float reducedLeading) {
         this.styles = styles;
+        this.reducedLeading = reducedLeading;
     }
 
     public Style get(StyleType st) {
         return styles.get(st);
+    }
+
+    public float getLeadingFactor() {
+        return this.reducedLeading;
     }
 }

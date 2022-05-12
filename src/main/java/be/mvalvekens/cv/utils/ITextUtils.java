@@ -10,8 +10,8 @@ public class ITextUtils {
         return t;
     }
 
-    public static Paragraph neutralPara(String txt) {
-        Paragraph p = new Paragraph(neutralText(txt)).setMargin(0).setMultipliedLeading(StyleManager.reducedLeading);
+    public static Paragraph neutralPara(String txt, float leadingFactor) {
+        Paragraph p = new Paragraph(neutralText(txt)).setMargin(0).setMultipliedLeading(leadingFactor);
         p.getAccessibilityProperties().setRole(null);
         return p;
     }
