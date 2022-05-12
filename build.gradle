@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group 'be.mvalvekens'
@@ -10,9 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.itextpdf:kernel:7.2.2'
+    api 'com.itextpdf:kernel:7.2.2'
+    api 'com.itextpdf:pdfa:7.2.2'
+    api 'com.itextpdf:layout:7.2.2'
     implementation 'com.itextpdf:io:7.2.2'
     implementation 'com.itextpdf:hyph:7.2.2'
-    implementation 'com.itextpdf:pdfa:7.2.2'
-    implementation 'com.itextpdf:layout:7.2.2'
 }
