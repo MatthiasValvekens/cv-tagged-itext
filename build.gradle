@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'be.mvalvekens'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.itextpdf:kernel:7.2.2'
+    implementation 'com.itextpdf:io:7.2.2'
+    implementation 'com.itextpdf:hyph:7.2.2'
+    implementation 'com.itextpdf:pdfa:7.2.2'
+    implementation 'com.itextpdf:layout:7.2.2'
+}
