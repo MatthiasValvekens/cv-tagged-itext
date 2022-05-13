@@ -1,4 +1,4 @@
-package be.mvalvekens.cv.components;
+package be.mvalvekens.cv.context;
 
 import com.itextpdf.layout.Style;
 

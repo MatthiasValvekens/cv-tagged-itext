@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.components;
 
-import be.mvalvekens.cv.utils.StyleManager;
+import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.kernel.pdf.tagutils.AccessibilityProperties;
@@ -9,7 +9,6 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
@@ -17,19 +16,19 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 public class CVItemList {
     private final Table backingTable;
     private final boolean zeropad;
-    private final StyleManager styles;
+    private final ICVContext context;
 
-    public CVItemList(StyleManager styles, boolean zeropad) {
+    public CVItemList(ICVContext context, boolean zeropad) {
         this.zeropad = zeropad;
         this.backingTable = new Table(new UnitValue[] {
                 UnitValue.createPointValue(80),
                 UnitValue.createPointValue(400),
         }).setBorder(Border.NO_BORDER);
-        this.styles = styles;
+        this.context = context;
     }
 
-    public CVItemList(StyleManager styles) {
-        this(styles, false);
+    public CVItemList(ICVContext context) {
+        this(context, false);
     }
 
     public void addItem(String label, Div content) {
@@ -47,12 +46,9 @@ public class CVItemList {
         attrs.addEnumAttribute("Scope", "Row");
         lblProps.addAttributes(attrs);
 
-        Paragraph lblPara = new Paragraph().setTextAlignment(TextAlignment.RIGHT)
-                .setMultipliedLeading(this.styles.getLeadingFactor());
+        Paragraph lblPara = this.context.createDefaultParagraph(label)
+                .setTextAlignment(TextAlignment.RIGHT);
         lblPara.getAccessibilityProperties().setRole(null);
-        Text lblTxt = new Text(label);
-        lblTxt.getAccessibilityProperties().setRole(null);
-        lblPara.add(lblTxt);
         lblCell.add(lblPara);
         this.backingTable.addCell(lblCell);
         Cell c = new Cell().setBorder(Border.NO_BORDER)

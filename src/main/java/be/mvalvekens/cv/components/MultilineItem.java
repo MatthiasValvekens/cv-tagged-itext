@@ -1,7 +1,8 @@
 package be.mvalvekens.cv.components;
 
+import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.utils.ITextUtils;
-import be.mvalvekens.cv.utils.StyleManager;
+import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
@@ -12,10 +13,10 @@ public class MultilineItem {
     private final String org;
     private final String loc;
     private final String[] others;
-    private final StyleManager styles;
+    private final ICVContext context;
 
-    public MultilineItem(StyleManager styles, String title, String org, String loc, String... others) {
-        this.styles = styles;
+    public MultilineItem(ICVContext context, String title, String org, String loc, String... others) {
+        this.context = context;
         this.title = title;
         this.org = org;
         this.loc = loc;
@@ -24,10 +25,10 @@ public class MultilineItem {
 
     public Div asContent() {
         Div d = new Div();
-        Paragraph p = new Paragraph().setMargin(0).setMultipliedLeading(this.styles.getLeadingFactor());
-        p.add(new Text(title).addStyle(styles.get(StyleType.BoldText)));
+        Paragraph p = this.context.createDefaultParagraph();
+        p.add(new Text(title).addStyle(context.getStyle(StyleType.BoldText)));
         p.add(ITextUtils.neutralText(", "));
-        p.add(new Text(this.org).addStyle(styles.get(StyleType.ObliqueText)));
+        p.add(new Text(this.org).addStyle(context.getStyle(StyleType.ObliqueText)));
         if (this.loc != null) {
             p.add(ITextUtils.neutralText(", "));
             p.add(this.loc);
@@ -38,8 +39,7 @@ public class MultilineItem {
         Div l = new Div();
         l.getAccessibilityProperties().setRole(StandardRoles.L);
         for (String s : others) {
-            Paragraph li = new Paragraph().setFontSize(10).setMargin(0)
-                    .setMultipliedLeading(this.styles.getLeadingFactor());
+            Paragraph li = this.context.createDefaultParagraph().setFontSize(10);
             li.getAccessibilityProperties().setRole(StandardRoles.LI);
             Paragraph lbody = new Paragraph(ITextUtils.neutralText(s)).setMargin(0);
             lbody.getAccessibilityProperties().setRole(StandardRoles.LBODY);
