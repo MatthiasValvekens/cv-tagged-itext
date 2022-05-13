@@ -60,10 +60,6 @@ public class CVItemList {
         this.backingTable.addCell(c);
     }
 
-    public void addToContainer(Div container) {
-        container.add(backingTable);
-    }
-
     public void addToContainer(CVSection container) {
         container.add(backingTable);
     }

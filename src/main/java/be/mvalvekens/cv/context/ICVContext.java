@@ -7,6 +7,7 @@ import com.itextpdf.layout.element.Paragraph;
 public interface ICVContext {
     Style getStyle(StyleType styleType);
     Paragraph createDefaultParagraph();
+    Paragraph createHeading(HeadingType hType, String headingText);
 
     default Paragraph createDefaultParagraph(String content) {
         Paragraph p = createDefaultParagraph();

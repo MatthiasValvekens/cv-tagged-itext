@@ -1,5 +1,6 @@
 package be.mvalvekens.cv.components;
 
+import be.mvalvekens.cv.context.HeadingType;
 import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.elems.Rule;
 import be.mvalvekens.cv.utils.ITextUtils;
@@ -35,23 +36,9 @@ public class CVSection implements IBlockElement {
         this.sectContainer.getAccessibilityProperties().setRole(StandardRoles.SECT);
     }
 
-    protected Paragraph prepareHeading(String headingText) {
-        Paragraph h = new Paragraph().addStyle(this.context.getStyle(StyleType.Heading));
-        h.setMarginBottom(0);
-        h.add(new Rule(UnitValue.createPointValue(80), UnitValue.createPointValue(5), 4));
-        h.getAccessibilityProperties().setRole(StandardRoles.H2);
-
-        Paragraph innerH = new Paragraph().setMargin(0).setMarginLeft(10);
-        innerH.getAccessibilityProperties().setRole(null);
-        Text hText = ITextUtils.neutralText(headingText);
-        innerH.add(hText);
-        h.add(innerH);
-        return h;
-    }
-
-    protected void addHeading(String headingText,
+    protected void addHeading(HeadingType hType, String headingText,
                               PdfOutline parentOutline, String destName) {
-        Paragraph heading = this.prepareHeading(headingText);
+        Paragraph heading = this.context.createHeading(hType, headingText);
         heading.setProperty(Property.DESTINATION, destName);
         sectContainer.add(heading);
         this.outline = parentOutline.addOutline(headingText);
@@ -98,16 +85,17 @@ public class CVSection implements IBlockElement {
     /**
      * Initialises a new section.
      *
-     * @param styles a {@link ICVContext}
+     * @param context an {@link ICVContext}
      * @param headingText the text to display in the heading
      * @param parentOutline the parent outline (or "bookmark") of which this section is a child
      * @param destName the name of the document destination to associate with this section
      * @return the new {@link CVSection}
      */
-    public static CVSection initSection(ICVContext styles, String headingText,
+    public static CVSection initSection(ICVContext context,
+                                        HeadingType hType, String headingText,
                                         PdfOutline parentOutline, String destName) {
-        CVSection section = new CVSection(styles);
-        section.addHeading(headingText, parentOutline, destName);
+        CVSection section = new CVSection(context);
+        section.addHeading(hType, headingText, parentOutline, destName);
         return section;
     }
 
