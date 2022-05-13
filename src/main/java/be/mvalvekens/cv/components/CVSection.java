@@ -1,9 +1,6 @@
 package be.mvalvekens.cv.components;
 
 import be.mvalvekens.cv.context.HeadingType;
-import be.mvalvekens.cv.context.StyleType;
-import be.mvalvekens.cv.elems.Rule;
-import be.mvalvekens.cv.utils.ITextUtils;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfString;
@@ -15,9 +12,7 @@ import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.Property;
-import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.renderer.IRenderer;
 
 import java.util.List;
