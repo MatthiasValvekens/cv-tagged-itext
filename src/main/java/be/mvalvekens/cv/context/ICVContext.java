@@ -5,6 +5,8 @@ import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph;
 
 public interface ICVContext {
+    String getName();
+    String getCVTitle();
     Style getStyle(StyleType styleType);
     Paragraph createDefaultParagraph();
     Paragraph createHeading(HeadingType hType, String headingText);

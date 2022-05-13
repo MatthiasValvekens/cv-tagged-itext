@@ -13,15 +13,19 @@ import java.util.Map;
 public class CVContext implements ICVContext {
     private final float reducedLeading;
     private final Map<StyleType, Style> styles;
+    private final String name;
+    private final String cvTitle;
 
     // TODO make this a builder
-    public CVContext() {
-        this(StyleType.defaultStyles(), 0.9f);
+    public CVContext(String name) {
+        this(StyleType.defaultStyles(), 0.9f, name, "Curriculum Vit\u00e6");
     }
 
-    public CVContext(Map<StyleType, Style> styles, float reducedLeading) {
+    public CVContext(Map<StyleType, Style> styles, float reducedLeading, String name, String cvTitle) {
         this.styles = styles;
         this.reducedLeading = reducedLeading;
+        this.name = name;
+        this.cvTitle = cvTitle;
     }
 
     @Override
@@ -69,5 +73,15 @@ public class CVContext implements ICVContext {
 
     public float getLeadingFactor() {
         return this.reducedLeading;
+    }
+
+    @Override
+    public String getCVTitle() {
+        return cvTitle;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
