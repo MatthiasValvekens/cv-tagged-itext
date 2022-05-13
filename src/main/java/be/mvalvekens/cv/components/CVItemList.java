@@ -67,4 +67,9 @@ public class CVItemList {
     public void addToContainer(Div container) {
         container.add(backingTable);
     }
+
+    public void addToContainer(CVSection container) {
+        container.add(backingTable);
+    }
+
 }
