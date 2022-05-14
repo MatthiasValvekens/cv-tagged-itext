@@ -2,6 +2,7 @@ package be.mvalvekens.cv.context;
 
 import be.mvalvekens.cv.elems.Rule;
 import be.mvalvekens.cv.utils.ITextUtils;
+import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph;
@@ -17,20 +18,26 @@ public class CVContext implements ICVContext {
     private final Map<StyleType, Style> styles;
     private final String name;
     private final String cvTitle;
+    private final String language;
     private final HyphenationConfig hyphenationConfig;
+    private final PdfFont defaultFont;
 
     // TODO make this a builder
-    public CVContext(Map<StyleType, Style> styles, String name) {
-        this(styles, 0.9f, name, "Curriculum Vit\u00e6", new HyphenationConfig("en", "GB", 2, 2));
+    public CVContext(PdfFont defaultFont, Map<StyleType, Style> styles, String name) {
+        this(defaultFont, styles, 0.9f, name, "Curriculum Vit\u00e6", "en-GB",
+                new HyphenationConfig("en", "GB", 2, 2));
     }
 
-    public CVContext(Map<StyleType, Style> styles, float reducedLeading, String name,
-                     String cvTitle, HyphenationConfig hyphenationConfig) {
+    public CVContext(PdfFont defaultFont,
+                     Map<StyleType, Style> styles, float reducedLeading, String name,
+                     String cvTitle, String language, HyphenationConfig hyphenationConfig) {
+        this.defaultFont = defaultFont;
         this.styles = styles;
         this.reducedLeading = reducedLeading;
         this.name = name;
         this.cvTitle = cvTitle;
         this.hyphenationConfig = hyphenationConfig;
+        this.language = language;
     }
 
     @Override
@@ -77,6 +84,11 @@ public class CVContext implements ICVContext {
     }
 
     @Override
+    public PdfFont getDefaultFont() {
+        return defaultFont;
+    }
+
+    @Override
     public Paragraph createMainTextParagraph() {
         return this.createDefaultParagraph()
                 .setTextAlignment(TextAlignment.JUSTIFIED)
@@ -98,4 +110,10 @@ public class CVContext implements ICVContext {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String getLang() {
+        return this.language;
+    }
+
 }

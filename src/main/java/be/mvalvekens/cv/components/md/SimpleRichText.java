@@ -1,5 +1,6 @@
 package be.mvalvekens.cv.components.md;
 
+import be.mvalvekens.cv.context.Contentable;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.layout.element.Div;
 import org.commonmark.node.Node;
@@ -8,16 +9,21 @@ import org.commonmark.parser.Parser;
 
 import java.util.Collections;
 
-public class SimpleRichText {
-    private final ICVContext context;
+public class SimpleRichText implements Contentable {
     private final String markdownInput;
+    private final boolean isSnippet;
 
-    public SimpleRichText(ICVContext context, String markdownInput) {
-        this.context = context;
-        this.markdownInput = markdownInput;
+    public SimpleRichText(String markdownInput) {
+        this(markdownInput, false);
     }
 
-    public Div asContent() {
+    public SimpleRichText(String markdownInput, boolean isSnippet) {
+        this.markdownInput = markdownInput;
+        this.isSnippet = isSnippet;
+    }
+
+    @Override
+    public Div asContent(ICVContext context) {
         // no special blocks enabled
         Parser p = Parser.builder()
                 .enabledBlockTypes(Collections.emptySet())
@@ -25,7 +31,7 @@ public class SimpleRichText {
         Node node = p.parse(this.markdownInput);
         Div result = new Div();
         result.getAccessibilityProperties().setRole(null);
-        Visitor v = new ITextLayoutVisitor(this.context, result::add);
+        Visitor v = new ITextLayoutVisitor(context, result::add, isSnippet);
         node.accept(v);
         return result;
     }

@@ -120,4 +120,8 @@ public class CVItemList implements IBlockElement {
         backingTable.deleteOwnProperty(property);
     }
 
+    protected ICVContext getContext() {
+        return this.context;
+    }
+
 }

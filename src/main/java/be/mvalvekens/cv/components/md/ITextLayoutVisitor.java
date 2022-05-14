@@ -34,6 +34,7 @@ import java.util.function.Consumer;
 public class ITextLayoutVisitor extends AbstractVisitor {
     private final ICVContext context;
     private final Consumer<? super com.itextpdf.layout.element.Paragraph> paraConsumer;
+    private final boolean isSnippet;
     private boolean strongFlag = false;
     private boolean emphasisFlag = false;
     private boolean isLink = false;
@@ -43,15 +44,17 @@ public class ITextLayoutVisitor extends AbstractVisitor {
     // tagging API
     private com.itextpdf.layout.element.Paragraph currentPara;
 
-    public ITextLayoutVisitor(ICVContext context,
-                              Consumer<? super com.itextpdf.layout.element.Paragraph> paraConsumer) {
+    ITextLayoutVisitor(ICVContext context, Consumer<? super com.itextpdf.layout.element.Paragraph> paraConsumer,
+                       boolean isSnippet) {
         this.context = context;
         this.paraConsumer = paraConsumer;
+        this.isSnippet = isSnippet;
     }
 
     @Override
     public void visit(Paragraph para) {
-        com.itextpdf.layout.element.Paragraph topLevelPara = context.createMainTextParagraph();
+        com.itextpdf.layout.element.Paragraph topLevelPara =
+                isSnippet ? context.createDefaultParagraph() : context.createMainTextParagraph();
         topLevelPara.addStyle(this.context.getStyle(StyleType.NormalText));
         this.currentPara = topLevelPara;
         visitChildren(para);
