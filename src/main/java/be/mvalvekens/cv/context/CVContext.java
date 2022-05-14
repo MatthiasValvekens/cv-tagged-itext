@@ -20,18 +20,18 @@ public class CVContext implements ICVContext {
     private final String cvTitle;
     private final String language;
     private final HyphenationConfig hyphenationConfig;
-    private final PdfFont defaultFont;
+    private final PdfFont mainFont;
 
     // TODO make this a builder
-    public CVContext(PdfFont defaultFont, Map<StyleType, Style> styles, String name) {
-        this(defaultFont, styles, 0.9f, name, "Curriculum Vit\u00e6", "en-GB",
+    public CVContext(PdfFont mainFont, Map<StyleType, Style> styles, String name) {
+        this(mainFont, styles, 0.9f, name, "Curriculum Vit\u00e6", "en-GB",
                 new HyphenationConfig("en", "GB", 2, 2));
     }
 
-    public CVContext(PdfFont defaultFont,
+    public CVContext(PdfFont mainFont,
                      Map<StyleType, Style> styles, float reducedLeading, String name,
                      String cvTitle, String language, HyphenationConfig hyphenationConfig) {
-        this.defaultFont = defaultFont;
+        this.mainFont = mainFont;
         this.styles = styles;
         this.reducedLeading = reducedLeading;
         this.name = name;
@@ -84,8 +84,8 @@ public class CVContext implements ICVContext {
     }
 
     @Override
-    public PdfFont getDefaultFont() {
-        return defaultFont;
+    public PdfFont getMainFont() {
+        return mainFont;
     }
 
     @Override

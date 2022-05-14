@@ -4,8 +4,10 @@ import be.mvalvekens.cv.components.CVSection;
 import be.mvalvekens.cv.components.PageCountHandler;
 import be.mvalvekens.cv.context.HeadingType;
 import be.mvalvekens.cv.context.ICVContext;
+import be.mvalvekens.cv.context.StyleType;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
+import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.pdf.PdfAConformanceLevel;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfDocumentInfo;
@@ -17,12 +19,17 @@ import com.itextpdf.kernel.pdf.PdfViewerPreferences;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.Style;
 import com.itextpdf.pdfa.PdfADocument;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import static be.mvalvekens.cv.utils.ITextUtils.fontFromResource;
 
 public class CVDocument implements AutoCloseable{
 
@@ -33,7 +40,7 @@ public class CVDocument implements AutoCloseable{
     public CVDocument(PdfDocument pdfDoc, ICVContext context) {
         this.context = context;
         this.pdfDoc = pdfDoc;
-        PageCountHandler pch = new PageCountHandler(context.getDefaultFont());
+        PageCountHandler pch = new PageCountHandler(context.getMainFont());
         pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE, pch);
         pdfDoc.getCatalog().setLang(new PdfString(context.getLang()));
 
@@ -65,13 +72,35 @@ public class CVDocument implements AutoCloseable{
 
     protected Document initLayout() {
         Document doc = new Document(pdfDoc);
-        doc.setFont(getContext().getDefaultFont())
+        doc.setFont(getContext().getMainFont())
                 .setFontColor(DeviceRgb.BLACK)
                 .setFontSize(11);
         doc.setLeftMargin(60);
         doc.setRightMargin(60);
         return doc;
     }
+
+    public static PdfFont loadDefaultMainFont() throws IOException {
+        return fontFromResource("fonts/lmroman10-regular.otf");
+    }
+
+    public static Map<StyleType, Style> loadDefaultStyles(PdfFont mainFont) throws IOException {
+        Map<StyleType, Style> styles = new HashMap<>();
+        Style normal = new Style().setFont(mainFont);
+        styles.put(StyleType.NormalText, normal);
+        styles.put(StyleType.BoldItalicText, new Style().setFont(fontFromResource("fonts/lmroman10-bolditalic.otf")));
+        Style bold = new Style().setFont(fontFromResource("fonts/lmroman10-bold.otf"));
+        styles.put(StyleType.BoldText, bold);
+        styles.put(StyleType.ItalicText, new Style().setFont(fontFromResource("fonts/lmroman10-italic.otf")));
+        styles.put(StyleType.ObliqueText, new Style().setFont(fontFromResource("fonts/lmromanslant10-regular.otf")));
+        styles.put(StyleType.Heading, new Style(normal).setFontSize(18));
+        Style code = new Style().setFont(fontFromResource("fonts/lmmono10-regular.otf"));
+        styles.put(StyleType.Code, code);
+        styles.put(StyleType.Link, new Style(bold));
+        styles.put(StyleType.BareLink, new Style(code));
+        return styles;
+    }
+
 
     public static PdfDocument initPdfDoc(OutputStream out) throws IOException {
         WriterProperties wp = new WriterProperties()

@@ -11,7 +11,7 @@ public interface ICVContext {
     Style getStyle(StyleType styleType);
     Paragraph createDefaultParagraph();
     Paragraph createHeading(HeadingType hType, String headingText);
-    PdfFont getDefaultFont();
+    PdfFont getMainFont();
     String getLang();
 
     default Paragraph createDefaultParagraph(String content) {
