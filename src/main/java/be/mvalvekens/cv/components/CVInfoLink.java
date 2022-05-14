@@ -3,6 +3,7 @@ package be.mvalvekens.cv.components;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.utils.ITextUtils;
+import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Paragraph;
@@ -38,16 +39,16 @@ public class CVInfoLink {
     public static class Label {
         private final String replacementText;
         private final String symbolText;
-        private final String symbolFontFamily;
+        private final PdfFont symbolFont;
 
-        public Label(String replacementText, String symbolText, String symbolFontFamily) {
+        public Label(String replacementText, String symbolText, PdfFont symbolFont) {
             this.replacementText = replacementText;
             this.symbolText = symbolText;
-            this.symbolFontFamily = symbolFontFamily;
+            this.symbolFont = symbolFont;
         }
 
         private Text asText() {
-            Text iconText = new Text(symbolText + " ").setFontFamily(symbolFontFamily);
+            Text iconText = new Text(symbolText + " ").setFont(this.symbolFont);
             iconText.getAccessibilityProperties()
                     .setActualText(replacementText)
                     .setRole(StandardRoles.LBL);

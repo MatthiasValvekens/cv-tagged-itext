@@ -17,8 +17,8 @@ public class CVContext implements ICVContext {
     private final String cvTitle;
 
     // TODO make this a builder
-    public CVContext(String name) {
-        this(StyleType.defaultStyles(), 0.9f, name, "Curriculum Vit\u00e6");
+    public CVContext(Map<StyleType, Style> styles, String name) {
+        this(styles, 0.9f, name, "Curriculum Vit\u00e6");
     }
 
     public CVContext(Map<StyleType, Style> styles, float reducedLeading, String name, String cvTitle) {
