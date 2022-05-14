@@ -9,7 +9,7 @@ import org.commonmark.parser.Parser;
 
 import java.util.Collections;
 
-public class SimpleRichText implements Contentable {
+public class SimpleRichText implements Contentable<Div> {
     private final String markdownInput;
     private final boolean isSnippet;
 

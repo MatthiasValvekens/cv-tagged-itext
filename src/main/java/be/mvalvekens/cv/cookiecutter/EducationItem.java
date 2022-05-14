@@ -8,7 +8,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
-public class EducationItem implements Contentable {
+public class EducationItem implements Contentable<Div> {
     private final String credential;
     private final String institution;
     private final String subline;

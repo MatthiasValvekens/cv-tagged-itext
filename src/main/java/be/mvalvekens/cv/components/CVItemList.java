@@ -1,5 +1,6 @@
 package be.mvalvekens.cv.components;
 
+import be.mvalvekens.cv.context.Contentable;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
@@ -7,37 +8,46 @@ import com.itextpdf.kernel.pdf.tagutils.AccessibilityProperties;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Div;
-import com.itextpdf.layout.element.IBlockElement;
-import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
-import com.itextpdf.layout.renderer.IRenderer;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CVItemList implements IBlockElement {
-    private final Table backingTable;
+public class CVItemList implements Contentable<Table> {
     private final boolean zeropad;
-    private final ICVContext context;
+    private final List<ListItem> items;
 
-    public CVItemList(ICVContext context, boolean zeropad) {
+    public CVItemList(boolean zeropad) {
         this.zeropad = zeropad;
-        this.backingTable = new Table(new UnitValue[] {
+        this.items = new ArrayList<>();
+    }
+
+    public CVItemList() {
+        this(false);
+    }
+
+    public void addItem(String label, Contentable<Div> content) {
+        this.items.add(new ListItem(label, content));
+    }
+
+    @Override
+    public Table asContent(ICVContext context) {
+        Table backingTable = new Table(new UnitValue[] {
                 UnitValue.createPointValue(80),
                 UnitValue.createPointValue(400),
         }).setBorder(Border.NO_BORDER);
-        this.context = context;
+        this.items.forEach(item -> addRenderedItem(context, backingTable, item));
+        return backingTable;
     }
 
-    public CVItemList(ICVContext context) {
-        this(context, false);
-    }
+    private void addRenderedItem(ICVContext context, Table backingTable, ListItem item) {
 
-    public void addItem(String label, Div content) {
-        this.backingTable.startNewRow();
+        backingTable.startNewRow();
+        Div content = item.content.asContent(context);
         content.getAccessibilityProperties().setRole(null);
         content.setMarginLeft(10);
         Cell lblCell = new Cell().setBorder(Border.NO_BORDER)
@@ -51,77 +61,27 @@ public class CVItemList implements IBlockElement {
         attrs.addEnumAttribute("Scope", "Row");
         lblProps.addAttributes(attrs);
 
-        Paragraph lblPara = this.context.createDefaultParagraph(label)
+        Paragraph lblPara = context.createDefaultParagraph(item.label)
                 .setTextAlignment(TextAlignment.RIGHT);
         lblPara.getAccessibilityProperties().setRole(null);
         lblCell.add(lblPara);
-        this.backingTable.addCell(lblCell);
+        backingTable.addCell(lblCell);
         Cell c = new Cell().setBorder(Border.NO_BORDER)
                 .setVerticalAlignment(VerticalAlignment.TOP);
         if(zeropad) {
             c.setPadding(0);
         }
         c.add(content);
-        this.backingTable.addCell(c);
+        backingTable.addCell(c);
     }
 
-    @Override
-    public List<IElement> getChildren() {
-        return backingTable.getChildren();
-    }
+    private static final class ListItem {
+        private final String label;
+        private final Contentable<Div> content;
 
-    @Override
-    public void setNextRenderer(IRenderer renderer) {
-        backingTable.setNextRenderer(renderer);
+        private ListItem(String label, Contentable<Div> content) {
+            this.label = label;
+            this.content = content;
+        }
     }
-
-    @Override
-    public IRenderer getRenderer() {
-        return backingTable.getRenderer();
-    }
-
-    @Override
-    public IRenderer createRendererSubTree() {
-        return backingTable.createRendererSubTree();
-    }
-
-    @Override
-    public boolean hasProperty(int property) {
-        return backingTable.hasProperty(property);
-    }
-
-    @Override
-    public boolean hasOwnProperty(int property) {
-        return backingTable.hasOwnProperty(property);
-    }
-
-    @Override
-    public <T1> T1 getProperty(int property) {
-        return backingTable.getProperty(property);
-    }
-
-    @Override
-    public <T1> T1 getOwnProperty(int property) {
-        return backingTable.getOwnProperty(property);
-    }
-
-    @Override
-    public <T1> T1 getDefaultProperty(int property) {
-        return backingTable.getDefaultProperty(property);
-    }
-
-    @Override
-    public void setProperty(int property, Object value) {
-        backingTable.setProperty(property, value);
-    }
-
-    @Override
-    public void deleteOwnProperty(int property) {
-        backingTable.deleteOwnProperty(property);
-    }
-
-    protected ICVContext getContext() {
-        return this.context;
-    }
-
 }

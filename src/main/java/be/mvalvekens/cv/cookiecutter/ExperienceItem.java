@@ -9,7 +9,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
-public class ExperienceItem implements Contentable {
+public class ExperienceItem implements Contentable<Div> {
     private final String title;
     private final String org;
     private final String location;
