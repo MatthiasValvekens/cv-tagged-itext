@@ -118,7 +118,7 @@ public class ITextLayoutVisitor extends AbstractVisitor {
         linkAnnot.setAction(action);
         linkAnnot.setFlags(PdfAnnotation.PRINT)
                 .setBorder(new PdfArray(new float[]{0, 0, 0}));
-        span.setProperty(Property.ACTION, action);
+        span.setProperty(Property.LINK_ANNOTATION, linkAnnot);
         this.currentPara.add(span);
     }
 
