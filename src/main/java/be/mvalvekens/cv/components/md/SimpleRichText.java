@@ -24,6 +24,7 @@ public class SimpleRichText {
                 .build();
         Node node = p.parse(this.markdownInput);
         Div result = new Div();
+        result.getAccessibilityProperties().setRole(null);
         Visitor v = new ITextLayoutVisitor(this.context, result::add);
         node.accept(v);
         return result;

@@ -10,11 +10,8 @@ import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfLinkAnnotation;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Style;
-import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.AbstractElement;
-import com.itextpdf.layout.hyphenation.HyphenationConfig;
 import com.itextpdf.layout.properties.Property;
-import com.itextpdf.layout.properties.TextAlignment;
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.Code;
 import org.commonmark.node.Emphasis;
@@ -52,18 +49,9 @@ public class ITextLayoutVisitor extends AbstractVisitor {
         this.paraConsumer = paraConsumer;
     }
 
-    private com.itextpdf.layout.element.Paragraph justifiedPara() {
-        // TODO make these configurable!
-        return context.createDefaultParagraph()
-                .setTextAlignment(TextAlignment.JUSTIFIED)
-                .setHyphenation(new HyphenationConfig("en", "GB", 2, 2))
-                .setMarginBottom(4f)
-                .setFontSize(11);
-    }
-
     @Override
     public void visit(Paragraph para) {
-        com.itextpdf.layout.element.Paragraph topLevelPara = justifiedPara();
+        com.itextpdf.layout.element.Paragraph topLevelPara = context.createMainTextParagraph();
         topLevelPara.addStyle(this.context.getStyle(StyleType.NormalText));
         this.currentPara = topLevelPara;
         visitChildren(para);

@@ -6,6 +6,8 @@ import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.hyphenation.HyphenationConfig;
+import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
 import java.util.Map;
@@ -15,17 +17,20 @@ public class CVContext implements ICVContext {
     private final Map<StyleType, Style> styles;
     private final String name;
     private final String cvTitle;
+    private final HyphenationConfig hyphenationConfig;
 
     // TODO make this a builder
     public CVContext(Map<StyleType, Style> styles, String name) {
-        this(styles, 0.9f, name, "Curriculum Vit\u00e6");
+        this(styles, 0.9f, name, "Curriculum Vit\u00e6", new HyphenationConfig("en", "GB", 2, 2));
     }
 
-    public CVContext(Map<StyleType, Style> styles, float reducedLeading, String name, String cvTitle) {
+    public CVContext(Map<StyleType, Style> styles, float reducedLeading, String name,
+                     String cvTitle, HyphenationConfig hyphenationConfig) {
         this.styles = styles;
         this.reducedLeading = reducedLeading;
         this.name = name;
         this.cvTitle = cvTitle;
+        this.hyphenationConfig = hyphenationConfig;
     }
 
     @Override
@@ -69,6 +74,15 @@ public class CVContext implements ICVContext {
         innerH.add(hText);
         h.add(innerH);
         return h;
+    }
+
+    @Override
+    public Paragraph createMainTextParagraph() {
+        return this.createDefaultParagraph()
+                .setTextAlignment(TextAlignment.JUSTIFIED)
+                .setHyphenation(this.hyphenationConfig)
+                .setMarginBottom(4f)
+                .setFontSize(11);
     }
 
     public float getLeadingFactor() {

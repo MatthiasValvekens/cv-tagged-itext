@@ -24,4 +24,6 @@ public interface ICVContext {
         p.getAccessibilityProperties().setRole(role);
         return p;
     }
+
+    Paragraph createMainTextParagraph();
 }
