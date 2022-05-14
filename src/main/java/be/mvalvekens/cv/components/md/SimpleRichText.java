@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.components.md;
 
-import be.mvalvekens.cv.context.Contentable;
+import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.layout.element.Div;
 import org.commonmark.node.Node;
@@ -9,7 +9,7 @@ import org.commonmark.parser.Parser;
 
 import java.util.Collections;
 
-public class SimpleRichText implements Contentable<Div> {
+public class SimpleRichText implements CVContent<Div> {
     private final String markdownInput;
     private final boolean isSnippet;
 
@@ -23,7 +23,7 @@ public class SimpleRichText implements Contentable<Div> {
     }
 
     @Override
-    public Div asContent(ICVContext context) {
+    public Div layoutContent(ICVContext context) {
         // no special blocks enabled
         Parser p = Parser.builder()
                 .enabledBlockTypes(Collections.emptySet())

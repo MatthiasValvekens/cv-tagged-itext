@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.cookiecutter;
 
-import be.mvalvekens.cv.context.Contentable;
+import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.utils.ITextUtils;
 import be.mvalvekens.cv.context.ICVContext;
@@ -9,7 +9,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
-public class ExperienceItem implements Contentable<Div> {
+public class ExperienceItem implements CVContent<Div> {
     private final String title;
     private final String org;
     private final String location;
@@ -23,7 +23,7 @@ public class ExperienceItem implements Contentable<Div> {
     }
 
     @Override
-    public Div asContent(ICVContext context) {
+    public Div layoutContent(ICVContext context) {
         Div d = new Div();
         Paragraph p = context.createDefaultParagraph();
         p.add(new Text(title).addStyle(context.getStyle(StyleType.BoldText)));

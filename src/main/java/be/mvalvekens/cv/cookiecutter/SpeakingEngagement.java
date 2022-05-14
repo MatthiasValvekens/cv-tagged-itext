@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.cookiecutter;
 
-import be.mvalvekens.cv.context.Contentable;
+import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.utils.ITextUtils;
@@ -8,7 +8,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
-public class SpeakingEngagement implements Contentable<Div> {
+public class SpeakingEngagement implements CVContent<Div> {
     // TODO move date logic into this class
     private final String title;
     private final String event;
@@ -23,7 +23,7 @@ public class SpeakingEngagement implements Contentable<Div> {
     }
 
     @Override
-    public Div asContent(ICVContext context) {
+    public Div layoutContent(ICVContext context) {
         Div result = new Div();
         Paragraph p = context.createDefaultParagraph();
         p.getAccessibilityProperties().setRole(null);

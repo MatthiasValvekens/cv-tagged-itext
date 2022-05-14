@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.components;
 
-import be.mvalvekens.cv.context.Contentable;
+import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
@@ -17,7 +17,7 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CVItemList implements Contentable<Table> {
+public class CVItemList implements CVContent<Table> {
     private final boolean zeropad;
     private final List<ListItem> items;
 
@@ -30,12 +30,12 @@ public class CVItemList implements Contentable<Table> {
         this(false);
     }
 
-    public void addItem(String label, Contentable<Div> content) {
+    public void addItem(String label, CVContent<Div> content) {
         this.items.add(new ListItem(label, content));
     }
 
     @Override
-    public Table asContent(ICVContext context) {
+    public Table layoutContent(ICVContext context) {
         Table backingTable = new Table(new UnitValue[] {
                 UnitValue.createPointValue(80),
                 UnitValue.createPointValue(400),
@@ -47,7 +47,7 @@ public class CVItemList implements Contentable<Table> {
     private void addRenderedItem(ICVContext context, Table backingTable, ListItem item) {
 
         backingTable.startNewRow();
-        Div content = item.content.asContent(context);
+        Div content = item.content.layoutContent(context);
         content.getAccessibilityProperties().setRole(null);
         content.setMarginLeft(10);
         Cell lblCell = new Cell().setBorder(Border.NO_BORDER)
@@ -77,9 +77,9 @@ public class CVItemList implements Contentable<Table> {
 
     private static final class ListItem {
         private final String label;
-        private final Contentable<Div> content;
+        private final CVContent<Div> content;
 
-        private ListItem(String label, Contentable<Div> content) {
+        private ListItem(String label, CVContent<Div> content) {
             this.label = label;
             this.content = content;
         }
