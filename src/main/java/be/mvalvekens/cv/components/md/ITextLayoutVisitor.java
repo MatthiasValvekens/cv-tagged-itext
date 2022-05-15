@@ -90,18 +90,20 @@ public class ITextLayoutVisitor extends AbstractVisitor {
         if(dest.isEmpty()) {
             return;
         }
-        Style linkStyle = this.context.getStyle(StyleType.Link);
-        this.isLink = true;
-        com.itextpdf.layout.element.Paragraph span
-                = visitSpan(link, StandardRoles.LINK, linkStyle);
-        this.isLink = false;
         PdfAction action;
+        String role;
         if(dest.charAt(0) == '#') {
             // put in a goto action to a named destination
             action = PdfAction.createGoTo(dest.substring(1));
+            role = StandardRoles.REFERENCE;
         } else {
             action = PdfAction.createURI(dest);
+            role = StandardRoles.LINK;
         }
+        Style linkStyle = this.context.getStyle(StyleType.Link);
+        this.isLink = true;
+        com.itextpdf.layout.element.Paragraph span = visitSpan(link, role, linkStyle);
+        this.isLink = false;
         PdfLinkAnnotation linkAnnot = new PdfLinkAnnotation(new Rectangle(0, 0, 0, 0));
         if(link.getTitle() != null) {
             linkAnnot.setContents(link.getTitle());
