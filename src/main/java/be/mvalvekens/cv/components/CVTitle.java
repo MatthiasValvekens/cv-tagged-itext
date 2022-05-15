@@ -1,5 +1,6 @@
 package be.mvalvekens.cv.components;
 
+import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
 import com.itextpdf.io.image.ImageData;
@@ -19,8 +20,7 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 import java.io.IOException;
 import java.util.List;
 
-public class CVTitle {
-    private final ICVContext context;
+public class CVTitle implements CVContent<IBlockElement> {
     private final List<CVInfoLink> infoLinks;
     private final ImageData profilePicData;
     private UnitValue[] tableCellDimensions = new UnitValue[] {
@@ -30,23 +30,23 @@ public class CVTitle {
     };
     private String profilePicAlt = "Profile picture";
 
-    protected CVTitle(ICVContext context, List<CVInfoLink> infoLinks, ImageData profilePicData) {
-        this.context = context;
+    protected CVTitle(List<CVInfoLink> infoLinks, ImageData profilePicData) {
         this.profilePicData = profilePicData;
         this.infoLinks = infoLinks;
     }
 
-    public CVTitle(ICVContext context, List<CVInfoLink> infoLinks, String profilePicPath) throws IOException {
-        this(context, infoLinks, ImageDataFactory.create(profilePicPath));
+    public CVTitle(List<CVInfoLink> infoLinks, String profilePicPath) throws IOException {
+        this(infoLinks, ImageDataFactory.create(profilePicPath));
     }
 
-    public CVTitle(ICVContext context, List<CVInfoLink> infoLinks, byte[] profilePicData) {
-        this(context, infoLinks, ImageDataFactory.create(profilePicData));
+    public CVTitle(List<CVInfoLink> infoLinks, byte[] profilePicData) {
+        this(infoLinks, ImageDataFactory.create(profilePicData));
     }
 
-    public IBlockElement formatTitle() {
+    @Override
+    public IBlockElement layoutContent(ICVContext context) {
         Table container = new Table(tableCellDimensions);
-        container.addStyle(this.context.getStyle(StyleType.NormalText));
+        container.addStyle(context.getStyle(StyleType.NormalText));
         container.getAccessibilityProperties().setRole(null);
         container.startNewRow();
 
@@ -105,4 +105,5 @@ public class CVTitle {
         this.tableCellDimensions = tableCellDimensions;
         return this;
     }
+
 }
