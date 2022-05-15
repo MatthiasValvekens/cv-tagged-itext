@@ -22,15 +22,9 @@ public class CVContext implements ICVContext {
     private final HyphenationConfig hyphenationConfig;
     private final PdfFont mainFont;
 
-    // TODO make this a builder
-    public CVContext(PdfFont mainFont, Map<StyleType, Style> styles, String name) {
-        this(mainFont, styles, 0.9f, name, "Curriculum Vit\u00e6", "en-GB",
-                new HyphenationConfig("en", "GB", 2, 2));
-    }
-
-    public CVContext(PdfFont mainFont,
-                     Map<StyleType, Style> styles, float reducedLeading, String name,
-                     String cvTitle, String language, HyphenationConfig hyphenationConfig) {
+    CVContext(PdfFont mainFont,
+              Map<StyleType, Style> styles, float reducedLeading, String name,
+              String cvTitle, String language, HyphenationConfig hyphenationConfig) {
         this.mainFont = mainFont;
         this.styles = styles;
         this.reducedLeading = reducedLeading;
@@ -114,6 +108,10 @@ public class CVContext implements ICVContext {
     @Override
     public String getLang() {
         return this.language;
+    }
+
+    public static CVContextBuilder builder() {
+        return new CVContextBuilder();
     }
 
 }
