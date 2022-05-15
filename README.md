@@ -20,6 +20,13 @@ is performed by [iText 7](https://github.com/itext/itext7).
  * [VeraPDF](https://verapdf.org/home/#validation)
 
 
+## Examples
+
+ * Take a look in the `src/example` folder for some concrete example code.
+ * The CV linked [on my website][hp] was produced using this process.
+
+[hp]: https://mvalvekens.be/about.html "my about page"
+
 ## Licencing
 
 AGPL, see [LICENSE.md](LICENSE.md). Different conditions may apply for font resources.

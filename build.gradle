@@ -9,6 +9,17 @@ repositories {
     mavenCentral()
 }
 
+sourceSets{
+    example {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    exampleImplementation.extendsFrom(implementation)
+}
+
 dependencies {
     api 'com.itextpdf:kernel:7.2.2'
     api 'com.itextpdf:layout:7.2.2'
