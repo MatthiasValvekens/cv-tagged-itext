@@ -26,7 +26,7 @@ public class PageCountHandler implements IEventHandler {
         canvas.beginText()
                 .setFontAndSize(this.font, 12)
                 .beginMarkedContent(PdfName.Artifact)
-                .moveText(PageSize.A4.getWidth() / 2, 35)
+                .moveText(PageSize.A4.getWidth() / 2, 25)
                 .showText(String.format("%d", pageNum))
                 .endText()
                 .endMarkedContent()
