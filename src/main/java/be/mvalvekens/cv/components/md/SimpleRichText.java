@@ -12,6 +12,7 @@ import java.util.Collections;
 public class SimpleRichText implements CVContent<Div> {
     private final String markdownInput;
     private final boolean isSnippet;
+    private String role = null;
 
     public SimpleRichText(String markdownInput) {
         this(markdownInput, false);
@@ -22,6 +23,16 @@ public class SimpleRichText implements CVContent<Div> {
         this.isSnippet = isSnippet;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public SimpleRichText setRole(String role) {
+        this.role = role;
+        return this;
+    }
+
+
     @Override
     public Div layoutContent(ICVContext context) {
         // no special blocks enabled
@@ -30,7 +41,6 @@ public class SimpleRichText implements CVContent<Div> {
                 .build();
         Node node = p.parse(this.markdownInput);
         Div result = new Div();
-        result.getAccessibilityProperties().setRole(null);
         Visitor v = new ITextLayoutVisitor(context, result::add, isSnippet);
         node.accept(v);
         return result;

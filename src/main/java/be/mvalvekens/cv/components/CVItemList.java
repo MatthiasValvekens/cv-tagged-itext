@@ -1,6 +1,7 @@
 package be.mvalvekens.cv.components;
 
 import be.mvalvekens.cv.context.CVContent;
+import be.mvalvekens.cv.context.CVListContent;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
@@ -30,7 +31,7 @@ public class CVItemList implements CVContent<Table> {
         this(false);
     }
 
-    public void addItem(String label, CVContent<Div> content) {
+    public void addItem(String label, CVListContent content) {
         this.items.add(new ListItem(label, content));
     }
 
@@ -45,10 +46,9 @@ public class CVItemList implements CVContent<Table> {
     }
 
     private void addRenderedItem(ICVContext context, Table backingTable, ListItem item) {
-
         backingTable.startNewRow();
         Div content = item.content.layoutContent(context);
-        content.getAccessibilityProperties().setRole(null);
+        content.getAccessibilityProperties().setRole(item.content.getRole());
         content.setMarginLeft(10);
         Cell lblCell = new Cell().setBorder(Border.NO_BORDER)
                 .setVerticalAlignment(VerticalAlignment.TOP);
@@ -77,9 +77,9 @@ public class CVItemList implements CVContent<Table> {
 
     private static final class ListItem {
         private final String label;
-        private final CVContent<Div> content;
+        private final CVListContent content;
 
-        private ListItem(String label, CVContent<Div> content) {
+        private ListItem(String label, CVListContent content) {
             this.label = label;
             this.content = content;
         }

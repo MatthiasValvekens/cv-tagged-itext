@@ -1,18 +1,18 @@
 package be.mvalvekens.cv.cookiecutter;
 
 import be.mvalvekens.cv.components.md.SimpleRichText;
+import be.mvalvekens.cv.context.CVListContent;
 import be.mvalvekens.cv.context.ICVContext;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.element.Div;
 
-public class SimpleBibEntry extends SimpleRichText {
+public class SimpleBibEntry extends SimpleRichText implements CVListContent {
     public SimpleBibEntry(String markdownInput) {
         super(markdownInput, true);
     }
 
     public Div layoutContent(ICVContext context) {
-        Div result = super.layoutContent(context);
-        result.getAccessibilityProperties().setRole(StandardRoles.BIBENTRY);
-        return result;
+        setRole(StandardRoles.BIBENTRY);
+        return super.layoutContent(context);
     }
 }

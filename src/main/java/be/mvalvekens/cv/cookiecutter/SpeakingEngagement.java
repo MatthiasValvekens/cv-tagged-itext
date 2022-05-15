@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.cookiecutter;
 
-import be.mvalvekens.cv.context.CVContent;
+import be.mvalvekens.cv.context.CVListContent;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.utils.ITextUtils;
@@ -8,7 +8,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
-public class SpeakingEngagement implements CVContent<Div> {
+public class SpeakingEngagement implements CVListContent {
     // TODO move date logic into this class
     private final String title;
     private final String event;

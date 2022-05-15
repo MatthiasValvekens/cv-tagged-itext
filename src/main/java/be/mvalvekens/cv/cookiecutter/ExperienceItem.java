@@ -1,6 +1,6 @@
 package be.mvalvekens.cv.cookiecutter;
 
-import be.mvalvekens.cv.context.CVContent;
+import be.mvalvekens.cv.context.CVListContent;
 import be.mvalvekens.cv.context.StyleType;
 import be.mvalvekens.cv.utils.ITextUtils;
 import be.mvalvekens.cv.context.ICVContext;
@@ -9,7 +9,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
-public class ExperienceItem implements CVContent<Div> {
+public class ExperienceItem implements CVListContent {
     private final String title;
     private final String org;
     private final String location;
