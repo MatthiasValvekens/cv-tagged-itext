@@ -50,7 +50,8 @@ public class CVDocument implements AutoCloseable{
     }
 
     public CVSection initSubSection(String heading, String destName) {
-        return CVSection.initSection(getContext(), HeadingType.Subsection, heading, currentOutline, destName);
+        return CVSection.initSection(getContext(), HeadingType.Subsection, heading, currentOutline, destName)
+                .setKeepTogether(true);
     }
 
     public CVSection initSection(String heading, String destName) {

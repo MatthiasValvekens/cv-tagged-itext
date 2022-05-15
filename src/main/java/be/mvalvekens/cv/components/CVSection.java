@@ -56,6 +56,16 @@ public class CVSection implements IBlockElement {
     }
 
     /**
+     * Indicate whether to to keep the section together.
+     * @param keepTogether flag value
+     */
+    public CVSection setKeepTogether(boolean keepTogether) {
+        // keepWithNext unfortunately doesn't work in nested layout elements
+        sectContainer.setKeepTogether(keepTogether);
+        return this;
+    }
+
+    /**
      * Adds an image to the section.
      *
      * @param element an {@link Image}
