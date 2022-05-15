@@ -13,13 +13,23 @@ public class SpeakingEngagement implements CVContent<Div> {
     private final String title;
     private final String event;
     private final String location;
-    private final boolean invited;
+    private final boolean listAsInvited;
+    private final String remark;
 
-    public SpeakingEngagement(String title, String event, String location, boolean invited) {
+    public SpeakingEngagement(String title, String event, String location, boolean listAsInvited, String remark) {
         this.title = title;
         this.event = event;
         this.location = location;
-        this.invited = invited;
+        this.listAsInvited = listAsInvited;
+        this.remark = remark;
+    }
+
+    public SpeakingEngagement(String title, String event, String location, boolean listAsInvited) {
+        this(title, event, location, listAsInvited, null);
+    }
+
+    public SpeakingEngagement(String title, String event, String location) {
+        this(title, event, location, false);
     }
 
     @Override
@@ -30,7 +40,7 @@ public class SpeakingEngagement implements CVContent<Div> {
         p.add(new Text(title).addStyle(context.getStyle(StyleType.ItalicText)));
         p.add(ITextUtils.neutralText(", "));
         p.add(new Text(event));
-        if(invited) {
+        if(listAsInvited) {
             p.add(new Text(" (invited speaker)").addStyle(context.getStyle(StyleType.ItalicText)));
         }
         if(location == null) {
@@ -38,6 +48,10 @@ public class SpeakingEngagement implements CVContent<Div> {
         } else {
             p.add(ITextUtils.neutralText(", "));
             p.add(location);
+        }
+        if(remark != null) {
+            Text text = new Text("[" + remark + "]").addStyle(context.getStyle(StyleType.ItalicText));
+            p.add(ITextUtils.neutralText(" ")).add(text);
         }
         result.add(p);
         return result;
