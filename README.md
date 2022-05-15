@@ -27,7 +27,18 @@ is performed by [iText 7](https://github.com/itext/itext7).
 
 [hp]: https://mvalvekens.be/about.html "my about page"
 
+
+## Ideas
+
+ - A PDF 2.0 tagging mode &mdash; the only reason why I didn't go with PDF 2.0 tags from the start 
+   is that there's no PDF/UA equivalent for PDF 2.0 yet.
+ - Some sort of include/exclude mechanism to make it easier to generate CVs tailored towards specific
+   audiences from the same data.
+
+
 ## Licencing
 
-AGPL, see [LICENSE.md](LICENSE.md). Different conditions may apply for font resources.
+(c) 2022 Matthias Valvekens
+
+Provided under the terms of the AGPL, see [LICENSE.md](LICENSE.md). Different conditions may apply for font resources.
 
