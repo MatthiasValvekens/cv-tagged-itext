@@ -28,4 +28,9 @@ public class CVListWithDates extends CVItemList {
         addItem(String.format("%d\u2013%02d\u2013%02d", year, month, day), item);
         return this;
     }
+
+    public CVListWithDates inYear(int year, CVContent<Div> item) {
+        addItem(Integer.toString(year), item);
+        return this;
+    }
 }
