@@ -3,6 +3,7 @@ package be.mvalvekens.cv.components;
 import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
+import be.mvalvekens.cv.context.TaggingMode;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
@@ -13,6 +14,7 @@ import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
@@ -53,13 +55,19 @@ public class CVTitle implements CVContent<IBlockElement> {
         Cell titleCell = new Cell();
         titleCell.setBorder(Border.NO_BORDER).setVerticalAlignment(VerticalAlignment.BOTTOM);
         // Title is not in the PDF 1.7 namespace
-        titleCell.getAccessibilityProperties().setRole(StandardRoles.H1);
+        titleCell.getAccessibilityProperties().setRole(
+                context.getTaggingMode() == TaggingMode.PDF_2_0 ? StandardRoles.TITLE : StandardRoles.H1
+        );
         Paragraph name = context.createDefaultParagraph()
                 .setMargin(3)
                 .setFontSize(25)
                 .addStyle(context.getStyle(StyleType.NormalText));
         name.getAccessibilityProperties().setRole(null);
-        name.add(context.getName());
+        Text nameText = new Text(context.getName());
+        if(context.getTaggingMode() == TaggingMode.PDF_2_0) {
+            nameText.getAccessibilityProperties().setRole(StandardRoles.STRONG);
+        }
+        name.add(nameText);
         titleCell.add(name);
 
         Paragraph cvSub = new Paragraph(context.getCVTitle())

@@ -1,12 +1,14 @@
 package be.mvalvekens.cv.context;
 
 import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.hyphenation.HyphenationConfig;
 
 import java.util.Map;
 
 public class CVContextBuilder {
+    private final PdfDocument pdfDocument;
     private PdfFont mainFont;
     private Map<StyleType, Style> styles;
     private String name;
@@ -14,6 +16,11 @@ public class CVContextBuilder {
     private String cvTitle = "Curriculum Vit\u00e6";
     private String language = "en-GB";
     private HyphenationConfig hyphenationConfig = new HyphenationConfig("en", "GB", 2, 2);
+    private TaggingMode taggingMode = TaggingMode.PDFUA_1;
+
+    public CVContextBuilder(PdfDocument pdfDocument) {
+        this.pdfDocument = pdfDocument;
+    }
 
     public CVContextBuilder setMainFont(PdfFont mainFont) {
         this.mainFont = mainFont;
@@ -50,7 +57,13 @@ public class CVContextBuilder {
         return this;
     }
 
+    public CVContextBuilder setTaggingMode(TaggingMode taggingMode) {
+        this.taggingMode = taggingMode;
+        return this;
+    }
+
     public CVContext build() {
-        return new CVContext(mainFont, styles, reducedLeading, name, cvTitle, language, hyphenationConfig);
+        return new CVContext(mainFont, styles, reducedLeading, name, cvTitle, language, hyphenationConfig, taggingMode,
+                pdfDocument.getTagStructureContext());
     }
 }

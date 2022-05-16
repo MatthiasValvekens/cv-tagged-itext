@@ -2,12 +2,15 @@ package be.mvalvekens.cv.components.md;
 
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
+import be.mvalvekens.cv.context.TaggingMode;
 import be.mvalvekens.cv.utils.ITextUtils;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfArray;
 import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfLinkAnnotation;
+import com.itextpdf.kernel.pdf.tagging.PdfNamespace;
+import com.itextpdf.kernel.pdf.tagging.StandardNamespaces;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.AbstractElement;
@@ -35,6 +38,7 @@ public class ITextLayoutVisitor extends AbstractVisitor {
     private final ICVContext context;
     private final Consumer<? super com.itextpdf.layout.element.Paragraph> paraConsumer;
     private final boolean isSnippet;
+    private final boolean emphasisIsSemantic;
     private boolean strongFlag = false;
     private boolean emphasisFlag = false;
     private boolean isLink = false;
@@ -45,10 +49,11 @@ public class ITextLayoutVisitor extends AbstractVisitor {
     private com.itextpdf.layout.element.Paragraph currentPara;
 
     ITextLayoutVisitor(ICVContext context, Consumer<? super com.itextpdf.layout.element.Paragraph> paraConsumer,
-                       boolean isSnippet) {
+                       boolean isSnippet, boolean emphasisIsSemantic) {
         this.context = context;
         this.paraConsumer = paraConsumer;
         this.isSnippet = isSnippet;
+        this.emphasisIsSemantic = emphasisIsSemantic;
     }
 
     @Override
@@ -67,15 +72,26 @@ public class ITextLayoutVisitor extends AbstractVisitor {
     @Override
     public void visit(Emphasis emphasis) {
         this.emphasisFlag = true;
-        // in 1.7, this is the best we got
-        this.currentPara.add(visitSpan(emphasis, StandardRoles.SPAN, null));
+        String role;
+        if (context.getTaggingMode() == TaggingMode.PDF_2_0 && emphasisIsSemantic) {
+            role = StandardRoles.EM;
+        } else {
+            role = StandardRoles.SPAN;
+        }
+        this.currentPara.add(visitSpan(emphasis, role, null, null));
         this.emphasisFlag = false;
     }
 
     @Override
     public void visit(StrongEmphasis strongEmphasis) {
         this.strongFlag = true;
-        this.currentPara.add(visitSpan(strongEmphasis, StandardRoles.SPAN, null));
+        String role;
+        if (context.getTaggingMode() == TaggingMode.PDF_2_0 && emphasisIsSemantic) {
+            role = StandardRoles.STRONG;
+        } else {
+            role = StandardRoles.SPAN;
+        }
+        this.currentPara.add(visitSpan(strongEmphasis, role, null, null));
         this.strongFlag = false;
     }
 
@@ -83,7 +99,15 @@ public class ITextLayoutVisitor extends AbstractVisitor {
     public void visit(Code code) {
         com.itextpdf.layout.element.Text text = new com.itextpdf.layout.element.Text(code.getLiteral());
         text.addStyle(this.context.getStyle(StyleType.Code));
-        text.getAccessibilityProperties().setRole(isLink ? StandardRoles.SPAN : StandardRoles.CODE);
+        if(isLink) {
+            text.getAccessibilityProperties().setRole(StandardRoles.SPAN);
+        } else if(context.getTaggingMode() == TaggingMode.PDF_2_0) {
+            text.getAccessibilityProperties()
+                    .setNamespace(context.getTagStructureContext().fetchNamespace(StandardNamespaces.PDF_1_7))
+                    .setRole(StandardRoles.CODE);
+        } else {
+            text.getAccessibilityProperties().setRole(StandardRoles.CODE);
+        }
         this.currentPara.add(text);
     }
 
@@ -95,17 +119,21 @@ public class ITextLayoutVisitor extends AbstractVisitor {
         }
         PdfAction action;
         String role;
+        PdfNamespace ns = null;
         if(dest.charAt(0) == '#') {
             // put in a goto action to a named destination
             action = PdfAction.createGoTo(dest.substring(1));
             role = StandardRoles.REFERENCE;
+            if (context.getTaggingMode() == TaggingMode.PDF_2_0) {
+                ns = context.getTagStructureContext().fetchNamespace(StandardNamespaces.PDF_1_7);
+            }
         } else {
             action = PdfAction.createURI(dest);
             role = StandardRoles.LINK;
         }
         Style linkStyle = this.context.getStyle(StyleType.Link);
         this.isLink = true;
-        com.itextpdf.layout.element.Paragraph span = visitSpan(link, role, linkStyle);
+        com.itextpdf.layout.element.Paragraph span = visitSpan(link, role, ns, linkStyle);
         this.isLink = false;
         PdfLinkAnnotation linkAnnot = new PdfLinkAnnotation(new Rectangle(0, 0, 0, 0));
         if(link.getTitle() != null) {
@@ -139,7 +167,7 @@ public class ITextLayoutVisitor extends AbstractVisitor {
         currentPara.add(setCurrentStyle(textEl));
     }
 
-    private com.itextpdf.layout.element.Paragraph visitSpan(Node span, String role,
+    private com.itextpdf.layout.element.Paragraph visitSpan(Node span, String role, PdfNamespace ns,
                                                             Style globalStyle) {
         com.itextpdf.layout.element.Paragraph parentPara = this.currentPara;
         // Again, not much we can do about this with the current
@@ -149,7 +177,7 @@ public class ITextLayoutVisitor extends AbstractVisitor {
         if(globalStyle != null) {
             inlinePara.addStyle(globalStyle);
         }
-        inlinePara.getAccessibilityProperties().setRole(role);
+        inlinePara.getAccessibilityProperties().setRole(role).setNamespace(ns);
 
         this.currentPara = inlinePara;
         visitChildren(span);

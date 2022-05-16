@@ -3,6 +3,7 @@ package be.mvalvekens.cv.cookiecutter;
 import be.mvalvekens.cv.components.md.SimpleRichText;
 import be.mvalvekens.cv.context.CVListContent;
 import be.mvalvekens.cv.context.ICVContext;
+import com.itextpdf.kernel.pdf.tagging.StandardNamespaces;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.element.Div;
 
@@ -12,7 +13,7 @@ public class SimpleBibEntry extends SimpleRichText implements CVListContent {
     }
 
     public Div layoutContent(ICVContext context) {
-        setRole(StandardRoles.BIBENTRY);
+        setRole(StandardRoles.BIBENTRY, StandardNamespaces.PDF_1_7);
         return super.layoutContent(context);
     }
 }

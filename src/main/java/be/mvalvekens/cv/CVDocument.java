@@ -5,6 +5,7 @@ import be.mvalvekens.cv.components.PageCountHandler;
 import be.mvalvekens.cv.context.HeadingType;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.context.StyleType;
+import be.mvalvekens.cv.context.TaggingMode;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
@@ -102,12 +103,11 @@ public class CVDocument implements AutoCloseable{
         return styles;
     }
 
-
     public static PdfDocument initPdfDoc(OutputStream out) throws IOException {
-        WriterProperties wp = new WriterProperties()
-                .setFullCompressionMode(true) // lots of tagging = benefit from object streams
-                .setPdfVersion(PdfVersion.PDF_1_7)
-                .addUAXmpMetadata();
+        return initPdfDoc(out, TaggingMode.PDFUA_1);
+    }
+
+    public static PdfDocument initPdfDoc(OutputStream out, TaggingMode mode) throws IOException {
 
         ClassLoader cl = CVDocument.class.getClassLoader();
         PdfOutputIntent oi;
@@ -119,8 +119,25 @@ public class CVDocument implements AutoCloseable{
                     "Custom", "",
                     "https://www.color.org", null, icc);
         }
-        PdfWriter w = new PdfWriter(out, wp);
-        PdfADocument pdfDoc = new PdfADocument(w, PdfAConformanceLevel.PDF_A_2A, oi);
+        PdfDocument pdfDoc;
+        WriterProperties wp;
+        if (mode == TaggingMode.PDF_2_0) {
+            // no PDF/A-4 support yet :(
+            wp = new WriterProperties()
+                    .setFullCompressionMode(true)
+                    .setPdfVersion(PdfVersion.PDF_2_0)
+                    .addXmpMetadata();
+            PdfWriter w = new PdfWriter(out, wp);
+            pdfDoc = new PdfDocument(w);
+            pdfDoc.addOutputIntent(oi);
+        } else {
+            wp = new WriterProperties()
+                    .setFullCompressionMode(true) // lots of tagging = benefit from object streams
+                    .setPdfVersion(PdfVersion.PDF_1_7)
+                    .addUAXmpMetadata();
+            PdfWriter w = new PdfWriter(out, wp);
+            pdfDoc = new PdfADocument(w, PdfAConformanceLevel.PDF_A_2A, oi);
+        }
         pdfDoc.setTagged();
         pdfDoc.getCatalog().setViewerPreferences(new PdfViewerPreferences().setDisplayDocTitle(true));
         return pdfDoc;

@@ -3,7 +3,7 @@ package be.mvalvekens.cv;
 import be.mvalvekens.cv.components.CVInfoLink;
 import be.mvalvekens.cv.components.CVSection;
 import be.mvalvekens.cv.components.CVTitle;
-import be.mvalvekens.cv.context.CVContextBuilder;
+import be.mvalvekens.cv.context.CVContext;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.cookiecutter.CVListWithDates;
 import be.mvalvekens.cv.cookiecutter.ExperienceItem;
@@ -66,7 +66,7 @@ public class MyExampleCV extends CVDocument {
     public static void write(String outfile) throws IOException {
         try(PdfDocument pdfDoc = CVDocument.initPdfDoc(new FileOutputStream(outfile))) {
             PdfFont mainFont = loadDefaultMainFont();
-            ICVContext context = new CVContextBuilder()
+            ICVContext context = CVContext.builder(pdfDoc)
                     .setMainFont(mainFont)
                     .setStyles(loadDefaultStyles(mainFont))
                     .setName("John Doe")

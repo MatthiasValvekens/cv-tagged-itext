@@ -2,6 +2,8 @@ package be.mvalvekens.cv.context;
 
 import be.mvalvekens.cv.utils.ITextUtils;
 import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.tagutils.TagStructureContext;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph;
 
@@ -13,6 +15,8 @@ public interface ICVContext {
     Paragraph createHeading(HeadingType hType, String headingText);
     PdfFont getMainFont();
     String getLang();
+    TaggingMode getTaggingMode();
+    TagStructureContext getTagStructureContext();
 
     default Paragraph createDefaultParagraph(String content) {
         Paragraph p = createDefaultParagraph();

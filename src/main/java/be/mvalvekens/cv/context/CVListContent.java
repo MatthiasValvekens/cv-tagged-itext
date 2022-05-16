@@ -11,6 +11,13 @@ public interface CVListContent extends CVContent<Div> {
         return null;
     }
 
+    /**
+     * Returns an explicit namespace that the item handling logic will apply.
+     */
+    default String getNamespace() {
+        return null;
+    }
+
     static CVListContent fromLayout(Div item) {
         return (x) -> item;
     }

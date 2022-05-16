@@ -48,7 +48,9 @@ public class CVItemList implements CVContent<Table> {
     private void addRenderedItem(ICVContext context, Table backingTable, ListItem item) {
         backingTable.startNewRow();
         Div content = item.content.layoutContent(context);
-        content.getAccessibilityProperties().setRole(item.content.getRole());
+        content.getAccessibilityProperties()
+                .setRole(item.content.getRole())
+                .setNamespace(context.getTagStructureContext().fetchNamespace(item.content.getNamespace()));
         content.setMarginLeft(10);
         Cell lblCell = new Cell().setBorder(Border.NO_BORDER)
                 .setVerticalAlignment(VerticalAlignment.TOP);
