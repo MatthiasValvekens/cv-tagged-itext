@@ -55,6 +55,9 @@ public class ITextLayoutVisitor extends AbstractVisitor {
     public void visit(Paragraph para) {
         com.itextpdf.layout.element.Paragraph topLevelPara =
                 isSnippet ? context.createDefaultParagraph() : context.createMainTextParagraph();
+        if(isSnippet) {
+            topLevelPara.getAccessibilityProperties().setRole(StandardRoles.SPAN);
+        }
         topLevelPara.addStyle(this.context.getStyle(StyleType.NormalText));
         this.currentPara = topLevelPara;
         visitChildren(para);
