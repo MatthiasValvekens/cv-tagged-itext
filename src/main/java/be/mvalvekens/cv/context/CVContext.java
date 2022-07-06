@@ -1,7 +1,10 @@
 package be.mvalvekens.cv.context;
 
-import be.mvalvekens.cv.elems.Rule;
-import be.mvalvekens.cv.utils.ITextUtils;
+import be.mvalvekens.itextts.context.HeadingType;
+import be.mvalvekens.itextts.context.StyleType;
+import be.mvalvekens.itextts.context.TaggingMode;
+import be.mvalvekens.itextts.elems.Rule;
+import be.mvalvekens.itextts.utils.ITextUtils;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;

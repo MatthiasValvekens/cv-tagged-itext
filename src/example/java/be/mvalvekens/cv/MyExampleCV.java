@@ -1,12 +1,12 @@
 package be.mvalvekens.cv;
 
-import be.mvalvekens.cv.components.CVInfoLink;
 import be.mvalvekens.cv.components.CVSection;
 import be.mvalvekens.cv.components.CVTitle;
 import be.mvalvekens.cv.context.CVContext;
 import be.mvalvekens.cv.context.ICVContext;
 import be.mvalvekens.cv.cookiecutter.CVListWithDates;
 import be.mvalvekens.cv.cookiecutter.ExperienceItem;
+import be.mvalvekens.itextts.elems.IconLink;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static be.mvalvekens.cv.utils.ITextUtils.getResourceBytes;
+import static be.mvalvekens.itextts.utils.ITextUtils.getResourceBytes;
 
 public class MyExampleCV extends CVDocument {
 
@@ -49,16 +49,11 @@ public class MyExampleCV extends CVDocument {
     }
 
     public CVTitle buildTitle(PdfFont symbolFont) {
-        List<CVInfoLink> links = new ArrayList<>();
+        List<IconLink> links = new ArrayList<>();
+        IconLink.Factory factory = new IconLink.Factory(symbolFont);
         // Cellphone
-        links.add(new CVInfoLink(
-                new CVInfoLink.Label("Mobile", "T", symbolFont),
-                "+32 000 000 000",
-                "tel:+32000000000"));
-        links.add(new CVInfoLink(
-                new CVInfoLink.Label("E-mail", "E", symbolFont),
-                "me@example.com",
-                "mailto:me@example.com"));
+        links.add(factory.buildPhone("+32 000 000 000", "T", "Mobile"));
+        links.add(factory.buildEmail("me@example.com", "E", "E-mail"));
 
         return new CVTitle(links, getResourceBytes(null, "pic.png"));
     }

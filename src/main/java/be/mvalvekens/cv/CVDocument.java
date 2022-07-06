@@ -1,11 +1,11 @@
 package be.mvalvekens.cv;
 
 import be.mvalvekens.cv.components.CVSection;
-import be.mvalvekens.cv.components.PageCountHandler;
-import be.mvalvekens.cv.context.HeadingType;
 import be.mvalvekens.cv.context.ICVContext;
-import be.mvalvekens.cv.context.StyleType;
-import be.mvalvekens.cv.context.TaggingMode;
+import be.mvalvekens.itextts.context.HeadingType;
+import be.mvalvekens.itextts.context.StyleType;
+import be.mvalvekens.itextts.context.TaggingMode;
+import be.mvalvekens.itextts.events.PageCountHandler;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
@@ -30,7 +30,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static be.mvalvekens.cv.utils.ITextUtils.fontFromResource;
+import static be.mvalvekens.itextts.utils.ITextUtils.fontFromResource;
 
 public class CVDocument implements AutoCloseable{
 

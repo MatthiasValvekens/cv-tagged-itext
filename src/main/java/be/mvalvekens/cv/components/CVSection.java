@@ -1,7 +1,7 @@
 package be.mvalvekens.cv.components;
 
-import be.mvalvekens.cv.context.HeadingType;
 import be.mvalvekens.cv.context.ICVContext;
+import be.mvalvekens.itextts.context.HeadingType;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.PdfString;
 import com.itextpdf.kernel.pdf.navigation.PdfDestination;

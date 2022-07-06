@@ -1,0 +1,3 @@
+[submodule "itext-ts-utils"]
+	path = itext-ts-utils
+	url = https://github.com/MatthiasValvekens/itext-ts-utils

@@ -2,8 +2,9 @@ package be.mvalvekens.cv.components;
 
 import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
-import be.mvalvekens.cv.context.StyleType;
-import be.mvalvekens.cv.context.TaggingMode;
+import be.mvalvekens.itextts.context.StyleType;
+import be.mvalvekens.itextts.context.TaggingMode;
+import be.mvalvekens.itextts.elems.IconLink;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class CVTitle implements CVContent<IBlockElement> {
-    private final List<CVInfoLink> infoLinks;
+    private final List<IconLink> infoLinks;
     private final ImageData profilePicData;
     private UnitValue[] tableCellDimensions = new UnitValue[] {
             UnitValue.createPercentValue(50),
@@ -32,16 +33,16 @@ public class CVTitle implements CVContent<IBlockElement> {
     };
     private String profilePicAlt = "Profile picture";
 
-    protected CVTitle(List<CVInfoLink> infoLinks, ImageData profilePicData) {
+    protected CVTitle(List<IconLink> infoLinks, ImageData profilePicData) {
         this.profilePicData = profilePicData;
         this.infoLinks = infoLinks;
     }
 
-    public CVTitle(List<CVInfoLink> infoLinks, String profilePicPath) throws IOException {
+    public CVTitle(List<IconLink> infoLinks, String profilePicPath) throws IOException {
         this(infoLinks, ImageDataFactory.create(profilePicPath));
     }
 
-    public CVTitle(List<CVInfoLink> infoLinks, byte[] profilePicData) {
+    public CVTitle(List<IconLink> infoLinks, byte[] profilePicData) {
         this(infoLinks, ImageDataFactory.create(profilePicData));
     }
 
@@ -82,8 +83,8 @@ public class CVTitle implements CVContent<IBlockElement> {
         linksCell.getAccessibilityProperties().setRole(StandardRoles.L);
         linksCell.setHorizontalAlignment(HorizontalAlignment.RIGHT);
 
-        for(CVInfoLink lnk : infoLinks) {
-            linksCell.add(lnk.formatSocialLink(context));
+        for(IconLink lnk : infoLinks) {
+            linksCell.add(lnk.format(context));
         }
 
         container.addCell(linksCell);

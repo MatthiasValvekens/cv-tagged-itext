@@ -21,10 +21,11 @@ configurations {
 }
 
 dependencies {
-    api 'com.itextpdf:kernel:7.2.2'
-    api 'com.itextpdf:layout:7.2.2'
+    api project(':itext-ts-utils')
+    api 'com.itextpdf:kernel:7.2.3'
+    api 'com.itextpdf:layout:7.2.3'
     implementation 'org.commonmark:commonmark:0.18.2'
-    implementation 'com.itextpdf:io:7.2.2'
-    implementation 'com.itextpdf:pdfa:7.2.2'
-    implementation 'com.itextpdf:hyph:7.2.2'
+    implementation 'com.itextpdf:io:7.2.3'
+    implementation 'com.itextpdf:pdfa:7.2.3'
+    implementation 'com.itextpdf:hyph:7.2.3'
 }

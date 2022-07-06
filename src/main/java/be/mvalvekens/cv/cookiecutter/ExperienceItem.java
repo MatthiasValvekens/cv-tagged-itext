@@ -1,9 +1,9 @@
 package be.mvalvekens.cv.cookiecutter;
 
 import be.mvalvekens.cv.context.CVListContent;
-import be.mvalvekens.cv.context.StyleType;
-import be.mvalvekens.cv.utils.ITextUtils;
 import be.mvalvekens.cv.context.ICVContext;
+import be.mvalvekens.itextts.context.StyleType;
+import be.mvalvekens.itextts.utils.ITextUtils;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;

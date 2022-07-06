@@ -1,5 +1,7 @@
 package be.mvalvekens.cv.context;
 
+import be.mvalvekens.itextts.context.StyleType;
+import be.mvalvekens.itextts.context.TaggingMode;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Style;

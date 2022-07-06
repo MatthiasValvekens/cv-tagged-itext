@@ -2,7 +2,7 @@ package be.mvalvekens.cv.cookiecutter;
 
 import be.mvalvekens.cv.context.CVContent;
 import be.mvalvekens.cv.context.ICVContext;
-import be.mvalvekens.cv.context.StyleType;
+import be.mvalvekens.itextts.context.StyleType;
 import com.itextpdf.kernel.pdf.tagging.PdfStructureAttributes;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.kernel.pdf.tagutils.AccessibilityProperties;
